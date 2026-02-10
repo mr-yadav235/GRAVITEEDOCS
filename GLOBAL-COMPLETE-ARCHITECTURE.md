@@ -4,7 +4,7 @@
 
 This document provides a comprehensive view of the entire Gravitee API Management platform architecture, covering all components across multiple regions with centralized control.
 
-![Global Complete Architecture](./diagrams/GLOBAL-COMPLETE-ARCHITECTURE.svg)
+![Global Complete Architecture](./GLOBAL-COMPLETE-ARCHITECTURE.svg)
 
 ---
 
