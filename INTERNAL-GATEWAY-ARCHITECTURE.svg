@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750">
+  <defs>
+    <linearGradient id="coreGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f39c12;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d68910;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="intGwGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#e74c3c;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c0392b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gslbGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#8e44ad;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9b59b6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="usClusterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3498db;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#2980b9;stop-opacity:0.4" />
+    </linearGradient>
+    <linearGradient id="euClusterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2ecc71;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#27ae60;stop-opacity:0.4" />
+    </linearGradient>
+    <linearGradient id="asiaClusterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#8e44ad;stop-opacity:0.4" />
+    </linearGradient>
+    <linearGradient id="appGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#34495e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2c3e50;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e74c3c"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="750" fill="#f5f6fa"/>
+  
+  <!-- Title -->
+  <text x="600" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#e74c3c">INTERNAL API GATEWAY ARCHITECTURE</text>
+  <text x="600" y="58" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#7f8c8d">Internal API Gateways for Microservices &amp; Internal Applications (Core Zone)</text>
+  
+  <!-- Internal Apps Section -->
+  <rect x="50" y="80" width="1100" height="80" rx="10" fill="url(#appGrad)" filter="url(#shadow)"/>
+  <text x="600" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#ecf0f1">INTERNAL APPLICATIONS &amp; MICROSERVICES</text>
+  <text x="200" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">US Internal Apps</text>
+  <text x="600" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">EU Internal Apps</text>
+  <text x="1000" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">ASIA Internal Apps</text>
+  
+  <!-- Core Zone -->
+  <g transform="translate(50, 180)">
+    <rect width="1100" height="530" rx="15" fill="url(#coreGrad)" filter="url(#shadow)"/>
+    <text x="550" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white">CORE ZONE - INTERNAL GATEWAY INFRASTRUCTURE</text>
+    
+    <!-- Internal GSLB -->
+    <rect x="20" y="60" width="1060" height="55" rx="8" fill="url(#gslbGrad)" filter="url(#shadow)"/>
+    <text x="550" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">INTERNAL GSLB (Global Server Load Balancer)</text>
+    <text x="550" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.9)">Routes internal traffic to appropriate regional gateway cluster | Health checks | Failover</text>
+    
+    <!-- Gateway Clusters Title -->
+    <text x="550" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">INTERNAL API GATEWAY CLUSTERS (3 Regions × 2 Nodes = 6 Total Nodes)</text>
+    
+    <!-- US Internal Gateway Cluster -->
+    <rect x="20" y="165" width="340" height="200" rx="10" fill="url(#usClusterGrad)" stroke="#3498db" stroke-width="3"/>
+    <text x="190" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">US INTERNAL GATEWAY CLUSTER</text>
+    <text x="190" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)">For US Region Internal Applications</text>
+    
+    <rect x="40" y="230" width="130" height="90" rx="6" fill="url(#intGwGrad)" filter="url(#shadow)"/>
+    <text x="105" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Internal GW</text>
+    <text x="105" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">US-Node-1</text>
+    <text x="105" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.7)">Active</text>
+    
+    <rect x="190" y="230" width="130" height="90" rx="6" fill="url(#intGwGrad)" filter="url(#shadow)"/>
+    <text x="255" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Internal GW</text>
+    <text x="255" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">US-Node-2</text>
+    <text x="255" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.7)">Active</text>
+    
+    <text x="190" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">2 Nodes | Active-Active | HA Enabled</text>
+    
+    <!-- EU Internal Gateway Cluster -->
+    <rect x="380" y="165" width="340" height="200" rx="10" fill="url(#euClusterGrad)" stroke="#2ecc71" stroke-width="3"/>
+    <text x="550" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">EU INTERNAL GATEWAY CLUSTER</text>
+    <text x="550" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)">For EU Region Internal Applications</text>
+    
+    <rect x="400" y="230" width="130" height="90" rx="6" fill="url(#intGwGrad)" filter="url(#shadow)"/>
+    <text x="465" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Internal GW</text>
+    <text x="465" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">EU-Node-1</text>
+    <text x="465" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.7)">Active</text>
+    
+    <rect x="550" y="230" width="130" height="90" rx="6" fill="url(#intGwGrad)" filter="url(#shadow)"/>
+    <text x="615" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Internal GW</text>
+    <text x="615" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">EU-Node-2</text>
+    <text x="615" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.7)">Active</text>
+    
+    <text x="550" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">2 Nodes | Active-Active | HA Enabled</text>
+    
+    <!-- ASIA Internal Gateway Cluster -->
+    <rect x="740" y="165" width="340" height="200" rx="10" fill="url(#asiaClusterGrad)" stroke="#9b59b6" stroke-width="3"/>
+    <text x="910" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">ASIA INTERNAL GATEWAY CLUSTER</text>
+    <text x="910" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)">For ASIA Region Internal Applications</text>
+    
+    <rect x="760" y="230" width="130" height="90" rx="6" fill="url(#intGwGrad)" filter="url(#shadow)"/>
+    <text x="825" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Internal GW</text>
+    <text x="825" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">ASIA-Node-1</text>
+    <text x="825" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.7)">Active</text>
+    
+    <rect x="910" y="230" width="130" height="90" rx="6" fill="url(#intGwGrad)" filter="url(#shadow)"/>
+    <text x="975" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Internal GW</text>
+    <text x="975" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">ASIA-Node-2</text>
+    <text x="975" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.7)">Active</text>
+    
+    <text x="910" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">2 Nodes | Active-Active | HA Enabled</text>
+    
+    <!-- Control Plane -->
+    <rect x="20" y="385" width="520" height="120" rx="10" fill="rgba(255,255,255,0.2)"/>
+    <text x="280" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">CONTROL PLANE (Configuration Source)</text>
+    
+    <rect x="40" y="425" width="145" height="60" rx="5" fill="#2c3e50"/>
+    <text x="112" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">Management API</text>
+    <text x="112" y="475" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,255,255,0.7)">API Definitions</text>
+    
+    <rect x="200" y="425" width="145" height="60" rx="5" fill="#2c3e50"/>
+    <text x="272" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">Console UI</text>
+    <text x="272" y="475" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,255,255,0.7)">Gateway Mgmt</text>
+    
+    <rect x="360" y="425" width="160" height="60" rx="5" fill="#2c3e50"/>
+    <text x="440" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">Developer Portal</text>
+    <text x="440" y="475" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,255,255,0.7)">Internal API Docs</text>
+    
+    <!-- Data Layer -->
+    <rect x="560" y="385" width="520" height="120" rx="10" fill="rgba(255,255,255,0.2)"/>
+    <text x="820" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">DATA LAYER (Shared)</text>
+    
+    <rect x="580" y="425" width="230" height="60" rx="5" fill="#4db33d"/>
+    <text x="695" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">MySQL</text>
+    <text x="695" y="475" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.9)">API Configs | Subscriptions</text>
+    
+    <rect x="830" y="425" width="230" height="60" rx="5" fill="#f9b110"/>
+    <text x="945" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Elasticsearch</text>
+    <text x="945" y="475" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.9)">Analytics | Metrics | Logs</text>
+  </g>
+  
+  <!-- Connection Lines from Apps to GSLB -->
+  <line x1="200" y1="160" x2="200" y2="240" stroke="#e74c3c" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="600" y1="160" x2="600" y2="240" stroke="#e74c3c" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="1000" y1="160" x2="1000" y2="240" stroke="#e74c3c" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Legend -->
+  <g transform="translate(50, 720)">
+    <rect x="0" y="0" width="15" height="15" fill="#e74c3c"/>
+    <text x="20" y="12" font-family="Arial, sans-serif" font-size="10" fill="#2c3e50">Internal API Gateway</text>
+    <rect x="180" y="0" width="15" height="15" fill="#8e44ad"/>
+    <text x="200" y="12" font-family="Arial, sans-serif" font-size="10" fill="#2c3e50">Internal GSLB</text>
+    <text x="350" y="12" font-family="Arial, sans-serif" font-size="10" fill="#7f8c8d">Purpose: Handle internal API traffic between microservices</text>
+    <text x="750" y="12" font-family="Arial, sans-serif" font-size="10" fill="#7f8c8d">Security: mTLS, Service Mesh integration, Internal Auth</text>
+  </g>
+</svg>
+

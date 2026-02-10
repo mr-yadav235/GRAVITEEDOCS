@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 750">
+  <defs>
+    <linearGradient id="jszGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#e74c3c;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c0392b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="coreGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f39c12;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d68910;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="intGwGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8e44ad;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="firewallGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#c0392b;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#922b21;stop-opacity:0.8" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="3" dy="3" stdDeviation="4" flood-opacity="0.3"/>
+    </filter>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3498db"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2ecc71"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1100" height="750" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="550" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#e74c3c">JAPAN SECURE ZONE (JSZ) ARCHITECTURE</text>
+  <text x="550" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#7f8c8d">Completely Isolated | Internal Gateway Only | No External Gateway | Gateway Direct Sync</text>
+  
+  <!-- Warning Banner -->
+  <rect x="50" y="75" width="1000" height="45" rx="6" fill="#f39c12" filter="url(#shadow)"/>
+  <text x="550" y="97" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">⚠ CRITICAL: JSZ is COMPLETELY SEPARATE from Global Architecture</text>
+  <text x="550" y="113" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.9)">No External Gateway | Internal Apps Only | Gateway directly pulls config &amp; pushes analytics (Outbound Only)</text>
+  
+  <!-- JSZ Box (Left) -->
+  <g transform="translate(50, 140)">
+    <rect width="500" height="550" rx="15" fill="url(#jszGrad)" filter="url(#shadow)"/>
+    <text x="250" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white">JAPAN SECURE ZONE</text>
+    <text x="250" y="58" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.8)">Isolated Network | Japan Compliance | Internal Traffic Only</text>
+    
+    <!-- No External Gateway Notice -->
+    <rect x="20" y="80" width="460" height="55" rx="8" fill="rgba(0,0,0,0.3)" stroke="#f1c40f" stroke-width="2"/>
+    <text x="250" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#f1c40f">⛔ NO EXTERNAL API GATEWAY</text>
+    <text x="250" y="123" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">JSZ does not expose APIs to internet | Internal traffic only</text>
+    
+    <!-- JSZ Internal Apps -->
+    <rect x="20" y="150" width="460" height="65" rx="8" fill="rgba(255,255,255,0.15)"/>
+    <text x="250" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">JSZ INTERNAL APPLICATIONS</text>
+    <text x="250" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.9)">Finance | HR | Compliance | Internal Operations</text>
+    
+    <!-- Internal Gateway Cluster -->
+    <rect x="20" y="230" width="460" height="220" rx="10" fill="rgba(155,89,182,0.4)" stroke="#9b59b6" stroke-width="2"/>
+    <text x="250" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">JSZ INTERNAL API GATEWAY CLUSTER</text>
+    <text x="250" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)">Gateway directly syncs with Core Zone (Outbound connections)</text>
+    
+    <rect x="50" y="300" width="180" height="100" rx="6" fill="url(#intGwGrad)" filter="url(#shadow)"/>
+    <text x="140" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Internal GW</text>
+    <text x="140" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">JSZ-Node-1</text>
+    <text x="140" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.7)">Active</text>
+    <text x="140" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#3498db">↓ Pulls Config</text>
+    
+    <rect x="270" y="300" width="180" height="100" rx="6" fill="url(#intGwGrad)" filter="url(#shadow)"/>
+    <text x="360" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Internal GW</text>
+    <text x="360" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">JSZ-Node-2</text>
+    <text x="360" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.7)">Active</text>
+    <text x="360" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2ecc71">↑ Pushes Analytics</text>
+    
+    <text x="250" y="430" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">2 Nodes | Active-Active | Direct Core Zone Sync</text>
+    
+    <!-- App Zone / Backend Services -->
+    <rect x="20" y="465" width="460" height="65" rx="8" fill="rgba(255,255,255,0.15)"/>
+    <text x="250" y="490" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">JSZ APP ZONE (Backend Services)</text>
+    <text x="250" y="510" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.8)">Japan-specific microservices | Databases | Internal APIs</text>
+  </g>
+  
+  <!-- Firewall Zone (Middle) -->
+  <g transform="translate(560, 140)">
+    <rect width="100" height="550" rx="8" fill="url(#firewallGrad)" stroke="#922b21" stroke-width="3" stroke-dasharray="10,5"/>
+    <text x="50" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">FIREWALL</text>
+    <text x="50" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Strict</text>
+    <text x="50" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Rules</text>
+    
+    <!-- Firewall Rules -->
+    <rect x="10" y="180" width="80" height="110" rx="5" fill="rgba(0,0,0,0.2)"/>
+    <text x="50" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#f1c40f">RULES</text>
+    <text x="50" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">✗ No Inbound</text>
+    <text x="50" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">✓ Outbound</text>
+    <text x="50" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">  to Core Only</text>
+    <text x="50" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">✓ Gateway</text>
+    <text x="50" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">  Direct Sync</text>
+    
+    <rect x="10" y="350" width="80" height="80" rx="5" fill="rgba(0,0,0,0.2)"/>
+    <text x="50" y="375" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#f1c40f">PORTS</text>
+    <text x="50" y="400" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">3306: MySQL</text>
+    <text x="50" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">9200: ES</text>
+  </g>
+  
+  <!-- Core Zone (Right) -->
+  <g transform="translate(670, 140)">
+    <rect width="380" height="550" rx="15" fill="url(#coreGrad)" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white">CORE ZONE</text>
+    <text x="190" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)">Centralized Control &amp; Data</text>
+    
+    <!-- Control Plane -->
+    <rect x="15" y="75" width="350" height="130" rx="8" fill="rgba(255,255,255,0.2)"/>
+    <text x="190" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">CONTROL PLANE</text>
+    
+    <rect x="30" y="115" width="100" height="70" rx="5" fill="#2c3e50"/>
+    <text x="80" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Management</text>
+    <text x="80" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">API</text>
+    <text x="80" y="178" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="rgba(255,255,255,0.7)">(Admin only)</text>
+    
+    <rect x="140" y="115" width="100" height="70" rx="5" fill="#2c3e50"/>
+    <text x="190" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Console UI</text>
+    <text x="190" y="178" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="rgba(255,255,255,0.7)">Admin Dashboard</text>
+    
+    <rect x="250" y="115" width="100" height="70" rx="5" fill="#2c3e50"/>
+    <text x="300" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Developer</text>
+    <text x="300" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Portal</text>
+    <text x="300" y="178" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="rgba(255,255,255,0.7)">API Docs</text>
+    
+    <!-- Data Layer -->
+    <rect x="15" y="220" width="350" height="150" rx="8" fill="rgba(255,255,255,0.2)"/>
+    <text x="190" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">DATA LAYER</text>
+    <text x="190" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.8)">JSZ Gateway connects directly</text>
+    
+    <rect x="30" y="280" width="150" height="75" rx="5" fill="#4db33d"/>
+    <text x="105" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">MySQL</text>
+    <text x="105" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,255,255,0.9)">API Configurations</text>
+    <text x="105" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,255,255,0.9)">Port: 3306</text>
+    
+    <rect x="200" y="280" width="150" height="75" rx="5" fill="#f9b110"/>
+    <text x="275" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Elasticsearch</text>
+    <text x="275" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,255,255,0.9)">Analytics Storage</text>
+    <text x="275" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,255,255,0.9)">Port: 9200</text>
+    
+    <!-- Sync Info -->
+    <rect x="15" y="385" width="350" height="145" rx="8" fill="rgba(255,255,255,0.15)"/>
+    <text x="190" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">JSZ GATEWAY SYNC (Direct)</text>
+    
+    <text x="190" y="440" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#3498db">← PULL: Gateway fetches API configs from MySQL</text>
+    <text x="190" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#2ecc71">← PUSH: Gateway sends analytics to Elasticsearch</text>
+    
+    <rect x="30" y="485" width="320" height="35" rx="4" fill="rgba(231,76,60,0.3)"/>
+    <text x="190" y="507" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">✗ Core Zone cannot initiate connections to JSZ</text>
+  </g>
+  
+  <!-- Sync Arrows -->
+  <!-- Config Pull Arrow (JSZ Gateway → Core MySQL) -->
+  <line x1="530" y1="420" x2="560" y2="380" stroke="#3498db" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  <text x="475" y="385" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#3498db">PULL</text>
+  <text x="475" y="400" font-family="Arial, sans-serif" font-size="8" fill="#3498db">Config</text>
+  
+  <!-- Analytics Push Arrow (JSZ Gateway → Core ES) -->
+  <line x1="530" y1="460" x2="560" y2="420" stroke="#2ecc71" stroke-width="3" marker-end="url(#arrowGreen)"/>
+  <text x="475" y="465" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#2ecc71">PUSH</text>
+  <text x="475" y="480" font-family="Arial, sans-serif" font-size="8" fill="#2ecc71">Analytics</text>
+  
+  <!-- Key Principles Box -->
+  <rect x="50" y="705" width="1000" height="35" rx="6" fill="#2c3e50"/>
+  <text x="550" y="727" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">KEY: Gateway directly syncs (no separate sync agent) | JSZ initiates ALL connections | No inbound from internet or Core Zone</text>
+</svg>
