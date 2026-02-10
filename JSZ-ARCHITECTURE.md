@@ -4,7 +4,7 @@
 
 This document details the Japan Secure Zone (JSZ) architecture, which is **completely separate** from the global architecture. JSZ is an isolated environment designed for Japan-specific compliance requirements with internal-only API traffic.
 
-![JSZ Architecture](./diagrams/JSZ-ARCHITECTURE.svg)
+![JSZ Architecture](./JSZ-ARCHITECTURE.svg)
 
 ---
 
