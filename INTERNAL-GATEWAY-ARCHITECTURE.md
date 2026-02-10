@@ -4,7 +4,7 @@
 
 This document details the Internal API Gateway architecture for handling internal microservice-to-microservice communication. All Internal Gateways are deployed within the Core Zone with regional clusters.
 
-![Internal Gateway Architecture](./diagrams/INTERNAL-GATEWAY-ARCHITECTURE.svg)
+![Internal Gateway Architecture](./INTERNAL-GATEWAY-ARCHITECTURE.svg)
 
 ---
 
