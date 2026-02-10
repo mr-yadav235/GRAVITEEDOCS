@@ -4,7 +4,7 @@
 
 This document details the External API Gateway architecture for handling public-facing API traffic from internet consumers across three regions: US, EU, and ASIA.
 
-![External Gateway Architecture](./diagrams/EXTERNAL-GATEWAY-ARCHITECTURE.svg)
+![External Gateway Architecture](./EXTERNAL-GATEWAY-ARCHITECTURE.svg)
 
 ---
 
