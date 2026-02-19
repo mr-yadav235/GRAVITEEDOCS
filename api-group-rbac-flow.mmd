@@ -1,0 +1,55 @@
+---
+title: API Group RBAC - Login to API Edit Flow
+---
+
+sequenceDiagram
+    autonumber
+    
+    participant User as 👤 Alice<br/>(Payment Team)
+    participant Console as 💻 Console UI
+    participant OpenAM as 🔐 OpenAM SSO
+    participant LDAP as 📁 LDAP/AD
+    participant API as 📊 Mgmt API
+    participant DB as 🗄️ MongoDB
+    
+    Note over User,DB: USER LOGIN WITH GROUP MAPPING
+    
+    User->>Console: Access Console
+    Console-->>User: Redirect to OpenAM
+    User->>OpenAM: Login (alice@company.com)
+    
+    OpenAM->>LDAP: Validate credentials
+    LDAP-->>OpenAM: User: alice<br/>Groups: [payment-team, api-publishers]
+    
+    OpenAM-->>User: JWT Token with groups claim
+    
+    Note right of OpenAM: JWT Claims:<br/>sub: alice@company.com<br/>groups: [payment-team]<br/>roles: [API_PUBLISHER]
+    
+    User->>Console: Access with JWT
+    Console->>API: GET /user/permissions<br/>Authorization: Bearer jwt
+    
+    API->>DB: Query user groups & API memberships
+    DB-->>API: User belongs to: Payment Team Group<br/>APIs in group: [Payment API]
+    
+    API-->>Console: Permissions:<br/>• Can edit: Payment API<br/>• Allowed tags: [payment-gw, internal-eu]
+    
+    Console-->>User: Show Dashboard<br/>(Only Payment API visible for edit)
+    
+    Note over User,DB: USER TRIES TO ACCESS UNAUTHORIZED API
+    
+    User->>Console: Try to edit Order API
+    Console->>API: GET /apis/order-api
+    API->>DB: Check membership
+    DB-->>API: User NOT in Order Team Group
+    API-->>Console: 403 Forbidden
+    Console-->>User: ❌ Access Denied<br/>"You don't have permission"
+    
+    Note over User,DB: USER EDITS AUTHORIZED API
+    
+    User->>Console: Edit Payment API
+    Console->>API: PUT /apis/payment-api<br/>{policies, endpoints}
+    API->>DB: Verify membership ✅
+    API->>DB: Save changes
+    DB-->>API: Saved
+    API-->>Console: 200 OK
+    Console-->>User: ✅ API Updated

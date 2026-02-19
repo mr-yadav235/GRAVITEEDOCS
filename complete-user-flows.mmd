@@ -1,0 +1,60 @@
+---
+title: Complete User Interaction Flows
+---
+
+flowchart TB
+    classDef corpZone fill:#7b1fa2,stroke:#4a148c,color:#fff
+    classDef innerDmz fill:#e65100,stroke:#bf360c,color:#fff
+    classDef coreZone fill:#2e7d32,stroke:#1b5e20,color:#fff
+    classDef console fill:#1976d2,stroke:#0d47a1,color:#fff
+    classDef portal fill:#00796b,stroke:#004d40,color:#fff
+    classDef gateway fill:#c62828,stroke:#b71c1c,color:#fff
+    classDef data fill:#455a64,stroke:#263238,color:#fff
+
+    subgraph CorporateZone["CORPORATE ZONE"]
+        CorpUser["👤 Corporate User<br/>(API Admin)"]:::corpZone
+        AppDev["👨‍💻 App Developer"]:::corpZone
+        ConsumerApp["📱 API Consumer App"]:::corpZone
+    end
+
+    subgraph InnerDMZ["INNER DMZ"]
+        OpenAM["🔐 OpenAM SSO<br/>OAuth 2.0 / OIDC"]:::innerDmz
+    end
+
+    subgraph CoreZone["CORE ZONE"]
+        Console["💻 Console UI"]:::console
+        Portal["📚 Developer Portal"]:::portal
+        MgmtAPI["📊 Management API"]:::coreZone
+        Gateway["⚡ API Gateway"]:::gateway
+        Backend["🔧 Backend APIs"]:::data
+        
+        subgraph DataServices["Data Services"]
+            MongoDB[("🗄️ MongoDB")]:::data
+            Redis[("⚡ Redis")]:::data
+            ES[("📈 Elasticsearch")]:::data
+        end
+    end
+
+    %% Flow A: Corporate User → Console
+    CorpUser -->|"A1: Access Console"| Console
+    Console -->|"A2: Auth Redirect"| OpenAM
+    OpenAM -->|"A3: JWT Token"| Console
+    Console -->|"A4: API Calls"| MgmtAPI
+    MgmtAPI --> MongoDB
+
+    %% Flow B: App Developer → Portal  
+    AppDev -->|"B1: Access Portal"| Portal
+    Portal -->|"B2: Auth Redirect"| OpenAM
+    OpenAM -->|"B3: JWT Token"| Portal
+    Portal -->|"B4: Browse/Subscribe"| MgmtAPI
+
+    %% Flow C: API Consumer → Gateway
+    ConsumerApp -->|"C1: Get Token"| OpenAM
+    OpenAM -->|"C2: Access Token"| ConsumerApp
+    ConsumerApp -->|"C3: API Request<br/>Bearer Token"| Gateway
+    Gateway -->|"C4: Validate Token"| OpenAM
+    Gateway -->|"C5: Rate Limit"| Redis
+    Gateway -->|"C6: Route"| Backend
+    Gateway -->|"C7: Analytics"| ES
+    Backend -->|"C8: Response"| Gateway
+    Gateway -->|"C9: Response"| ConsumerApp

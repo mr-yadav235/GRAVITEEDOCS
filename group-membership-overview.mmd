@@ -1,0 +1,91 @@
+---
+title: API Group Membership & Sharding Tags Overview
+---
+
+flowchart TB
+    classDef user fill:#7b1fa2,stroke:#4a148c,color:#fff
+    classDef group fill:#1976d2,stroke:#0d47a1,color:#fff
+    classDef api fill:#2e7d32,stroke:#1b5e20,color:#fff
+    classDef tag fill:#f57c00,stroke:#e65100,color:#fff
+    classDef gateway fill:#c62828,stroke:#b71c1c,color:#fff
+    classDef admin fill:#6a1b9a,stroke:#4a148c,color:#fff
+
+    subgraph OpenAM["OpenAM (LDAP Groups)"]
+        LDAP_Pay["payment-team"]
+        LDAP_Order["order-team"]
+        LDAP_User["user-team"]
+        LDAP_Admin["platform-admins"]
+    end
+
+    subgraph Users["USERS"]
+        Alice["👤 Alice"]:::user
+        Bob["👤 Bob"]:::user
+        Charlie["👤 Charlie"]:::user
+        Admin["👑 Admin"]:::admin
+    end
+
+    subgraph Groups["GRAVITEE GROUPS"]
+        G_Pay["🏷️ Payment Team<br/>Role: API_PUBLISHER"]:::group
+        G_Order["🏷️ Order Team<br/>Role: API_PUBLISHER"]:::group
+        G_User["🏷️ User Team<br/>Role: API_PUBLISHER"]:::group
+        G_Admin["🏷️ Platform Admins<br/>Role: ENV_ADMIN"]:::group
+    end
+
+    subgraph APIs["APIs"]
+        API_Pay["📦 Payment API"]:::api
+        API_Order["📦 Order API"]:::api
+        API_User["📦 User API"]:::api
+    end
+
+    subgraph Tags["SHARDING TAGS"]
+        T_EU["🏷️ internal-eu"]:::tag
+        T_US["🏷️ internal-us"]:::tag
+        T_ASIA["🏷️ internal-asia"]:::tag
+        T_PAY["🏷️ payment-gw"]:::tag
+    end
+
+    subgraph Gateways["GATEWAYS"]
+        GW_EU["⚡ EU Gateway"]:::gateway
+        GW_US["⚡ US Gateway"]:::gateway
+        GW_ASIA["⚡ ASIA Gateway"]:::gateway
+        GW_PAY["💳 Payment GW"]:::gateway
+    end
+
+    %% LDAP to Users
+    LDAP_Pay -.->|maps| Alice
+    LDAP_Order -.->|maps| Bob
+    LDAP_User -.->|maps| Charlie
+    LDAP_Admin -.->|maps| Admin
+
+    %% Users to Groups
+    Alice -->|member| G_Pay
+    Bob -->|member| G_Order
+    Charlie -->|member| G_User
+    Admin -->|member| G_Admin
+
+    %% Groups to APIs (can edit)
+    G_Pay -->|"can edit"| API_Pay
+    G_Order -->|"can edit"| API_Order
+    G_User -->|"can edit"| API_User
+    G_Admin -->|"can edit ALL"| API_Pay
+    G_Admin -->|"can edit ALL"| API_Order
+    G_Admin -->|"can edit ALL"| API_User
+
+    %% Groups to Tags (allowed)
+    G_Pay -->|"allowed"| T_EU
+    G_Pay -->|"allowed"| T_PAY
+    G_Order -->|"allowed"| T_EU
+    G_Order -->|"allowed"| T_US
+    G_Order -->|"allowed"| T_ASIA
+    G_User -->|"allowed"| T_EU
+    G_User -->|"allowed"| T_US
+    G_Admin -->|"allowed ALL"| T_EU
+    G_Admin -->|"allowed ALL"| T_US
+    G_Admin -->|"allowed ALL"| T_ASIA
+    G_Admin -->|"allowed ALL"| T_PAY
+
+    %% Tags to Gateways
+    T_EU -->|"deploys to"| GW_EU
+    T_US -->|"deploys to"| GW_US
+    T_ASIA -->|"deploys to"| GW_ASIA
+    T_PAY -->|"deploys to"| GW_PAY

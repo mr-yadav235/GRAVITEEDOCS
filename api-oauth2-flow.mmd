@@ -1,0 +1,73 @@
+---
+title: API Request Flow with OAuth 2.0 (API Consumer)
+---
+
+sequenceDiagram
+    autonumber
+    
+    participant App as 📱 API Consumer App<br/>(Corporate Zone)
+    participant OpenAM as 🔐 OpenAM SSO<br/>(Inner DMZ)
+    participant GW as ⚡ API Gateway<br/>(Core Zone)
+    participant Redis as ⚡ Redis<br/>(Core Zone)
+    participant Backend as 🔧 Backend API<br/>(Core Zone)
+    participant ES as 📈 Elasticsearch<br/>(Core Zone)
+    
+    Note over App,ES: API REQUEST WITH OAuth 2.0 TOKEN FLOW
+    
+    rect rgb(255, 243, 224)
+        Note over App,OpenAM: STEP 1: Get Access Token (Client Credentials)
+        
+        App->>OpenAM: 1️⃣ POST /oauth2/token<br/>grant_type=client_credentials&<br/>client_id=my-app&<br/>client_secret=xxx&<br/>scope=api:read api:write
+        
+        OpenAM->>OpenAM: 2️⃣ Validate client credentials
+        
+        OpenAM-->>App: 3️⃣ Token Response<br/>{<br/>  "access_token": "eyJhbGc...",<br/>  "token_type": "Bearer",<br/>  "expires_in": 3600,<br/>  "scope": "api:read api:write"<br/>}
+    end
+    
+    rect rgb(232, 245, 233)
+        Note over App,Backend: STEP 2: Call API with Bearer Token
+        
+        App->>GW: 4️⃣ POST /api/v1/users<br/>Authorization: Bearer eyJhbGc...<br/>Content-Type: application/json<br/>{"name": "John"}
+    end
+    
+    rect rgb(255, 235, 238)
+        Note over GW,OpenAM: STEP 3: Validate Token
+        
+        alt Token Introspection
+            GW->>OpenAM: 5️⃣a POST /oauth2/introspect<br/>token=eyJhbGc...
+            OpenAM-->>GW: 6️⃣a {<br/>  "active": true,<br/>  "client_id": "my-app",<br/>  "scope": "api:read api:write"<br/>}
+        else JWKS Validation (Cached)
+            GW->>OpenAM: 5️⃣b GET /oauth2/jwks (cached)
+            OpenAM-->>GW: 6️⃣b {keys: [...]}
+            GW->>GW: Validate JWT signature locally
+        end
+    end
+    
+    rect rgb(227, 242, 253)
+        Note over GW,Redis: STEP 4: Rate Limiting
+        
+        GW->>Redis: 7️⃣ INCR rate:my-app:users-api
+        Redis-->>GW: 8️⃣ Count: 50/1000 ✅
+    end
+    
+    rect rgb(243, 229, 245)
+        Note over GW,Backend: STEP 5: Route to Backend
+        
+        GW->>GW: 9️⃣ Apply policies<br/>• Add X-Correlation-ID<br/>• Transform request
+        
+        GW->>Backend: 🔟 POST /users<br/>X-Correlation-ID: uuid<br/>X-Consumer-Id: my-app
+        
+        Backend->>Backend: 1️⃣1️⃣ Process request
+        
+        Backend-->>GW: 1️⃣2️⃣ 201 Created<br/>{"id": "user-123", "name": "John"}
+    end
+    
+    rect rgb(255, 253, 231)
+        Note over GW,ES: STEP 6: Analytics & Response
+        
+        GW-)ES: 1️⃣3️⃣ Push analytics (async)<br/>{api, consumer, latency, status}
+        
+        GW-->>App: 1️⃣4️⃣ 201 Created<br/>{"id": "user-123", "name": "John"}
+    end
+    
+    Note over App,ES: ✅ API call completed successfully

@@ -1,0 +1,61 @@
+---
+title: Sharding Tag - API Deployment Flow
+---
+
+sequenceDiagram
+    autonumber
+    
+    participant User as 👤 Alice<br/>(Payment Team)
+    participant Console as 💻 Console UI
+    participant API as 📊 Mgmt API
+    participant DB as 🗄️ MongoDB
+    participant GW_EU as ⚡ EU Gateway<br/>[internal-eu]
+    participant GW_US as ⚡ US Gateway<br/>[internal-us]
+    participant GW_PAY as 💳 Payment GW<br/>[payment-gw]
+    
+    Note over User,GW_PAY: ALICE DEPLOYS PAYMENT API
+    
+    User->>Console: Deploy Payment API
+    Console->>Console: Show available sharding tags
+    
+    Note right of Console: Alice's allowed tags:<br/>✅ payment-gw<br/>✅ internal-eu<br/>❌ internal-us (not allowed)<br/>❌ internal-asia (not allowed)
+    
+    User->>Console: Select tags: [payment-gw, internal-eu]
+    Console->>API: POST /apis/payment-api/deploy<br/>{shardingTags: [payment-gw, internal-eu]}
+    
+    API->>DB: Verify user's allowed tags
+    DB-->>API: User allowed: [payment-gw, internal-eu] ✅
+    
+    API->>DB: Save API with sharding tags
+    DB-->>API: Saved
+    
+    API-->>Console: Deployment initiated
+    
+    Note over API,GW_PAY: GATEWAYS PULL CONFIGURATION
+    
+    par EU Gateway syncs
+        GW_EU->>DB: Pull APIs (tag: internal-eu)
+        DB-->>GW_EU: [Payment API] ✅
+        GW_EU->>GW_EU: Hot reload config
+    and Payment Gateway syncs
+        GW_PAY->>DB: Pull APIs (tag: payment-gw)
+        DB-->>GW_PAY: [Payment API] ✅
+        GW_PAY->>GW_PAY: Hot reload config
+    and US Gateway syncs
+        GW_US->>DB: Pull APIs (tag: internal-us)
+        DB-->>GW_US: [] (Payment API not tagged)
+        Note right of GW_US: Payment API NOT deployed here
+    end
+    
+    Console-->>User: ✅ Deployed to:<br/>• EU Gateway<br/>• Payment Gateway
+    
+    Note over User,GW_PAY: ALICE TRIES UNAUTHORIZED TAG
+    
+    User->>Console: Try deploy to internal-us
+    Console->>API: POST /apis/payment-api/deploy<br/>{shardingTags: [internal-us]}
+    
+    API->>DB: Verify user's allowed tags
+    DB-->>API: User NOT allowed: internal-us ❌
+    
+    API-->>Console: 403 Forbidden
+    Console-->>User: ❌ Cannot deploy to internal-us<br/>"Tag not in your allowed list"
