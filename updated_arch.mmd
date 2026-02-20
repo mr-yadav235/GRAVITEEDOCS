@@ -1,0 +1,89 @@
+---
+title: Core Zone - HLD Architecture with OpenAM (Inner DMZ)
+---
+
+flowchart TB
+    classDef innerDmz fill:#e65100,stroke:#bf360c,color:#fff,stroke-width:2px
+    classDef coreZone fill:#1976d2,stroke:#0d47a1,color:#fff,stroke-width:2px
+    classDef controlPlane fill:#7b1fa2,stroke:#4a148c,color:#fff,stroke-width:2px
+    classDef corpZone fill:#9c27b0,stroke:#6a1b9a,color:#fff,stroke-width:2px
+    classDef gateway fill:#1565c0,stroke:#0d47a1,color:#fff,stroke-width:2px
+    classDef data fill:#455a64,stroke:#263238,color:#fff,stroke-width:2px
+    classDef redis fill:#c62828,stroke:#b71c1c,color:#fff,stroke-width:2px
+    classDef es fill:#f57f17,stroke:#e65100,color:#000,stroke-width:2px
+    classDef mongo fill:#4527a0,stroke:#311b92,color:#fff,stroke-width:2px
+
+    subgraph InnerDMZ["INNER DMZ"]
+        OpenAM["🔐 OpenAM SSO<br/>OAuth 2.0 / OIDC Provider<br/>/oauth2/authorize • /oauth2/token<br/>/oauth2/introspect • /oauth2/jwks"]:::innerDmz
+    end
+
+    subgraph CoreZone["CORE ZONE"]
+        subgraph DataPlane["DATA PLANE (Internal API Gateway)"]
+            GLB["🌐 Global Load Balancer"]:::coreZone
+            
+            subgraph USRegion["US Region"]
+                US_LB["Regional LB"]:::coreZone
+                US_GW["⚡ Gateway Cluster<br/>(2 Nodes)"]:::gateway
+            end
+            
+            subgraph EURegion["EU Region"]
+                EU_LB["Regional LB"]:::coreZone
+                EU_GW["⚡ Gateway Cluster<br/>(2 Nodes)"]:::gateway
+            end
+            
+            subgraph APACRegion["APAC Region"]
+                APAC_LB["Regional LB"]:::coreZone
+                APAC_GW["⚡ Gateway Cluster<br/>(2 Nodes)"]:::gateway
+            end
+            
+            Backends["🔧 Internal API Backends"]:::data
+        end
+
+        subgraph ControlPlane["CONTROL PLANE (Shared)"]
+            Console["💻 Console UI"]:::controlPlane
+            MgmtAPI["📊 Management API"]:::controlPlane
+            Portal["📚 Developer Portal"]:::controlPlane
+            
+            MongoDB[("🗄️ MongoDB<br/>Config")]:::mongo
+            Redis[("⚡ Redis<br/>Rate Limit")]:::redis
+            ES[("📈 Elasticsearch<br/>Analytics")]:::es
+        end
+
+        Consumers["📱 API Consumers<br/>(Internal Apps)"]:::data
+    end
+
+    subgraph CorporateZone["CORPORATE ZONE"]
+        Admins["👤 API Developers / Admins"]:::corpZone
+        AppDevs["👨‍💻 App Developers"]:::corpZone
+    end
+
+    %% Corporate Zone Access
+    Admins -->|"A: Login"| Console
+    AppDevs -->|"A: Login"| Portal
+    Console & Portal -->|"B: Auth"| OpenAM
+    OpenAM -->|"C: JWT Token"| Console & Portal
+
+    %% API Traffic Flow
+    Consumers -->|"1: Request"| GLB
+    GLB -->|"2: Route"| US_LB & EU_LB & APAC_LB
+    US_LB -->|"3"| US_GW
+    EU_LB -->|"3"| EU_GW
+    APAC_LB -->|"3"| APAC_GW
+
+    %% Gateway to OpenAM (Token Validation)
+    US_GW & EU_GW & APAC_GW -->|"4: Validate Token"| OpenAM
+
+    %% Gateway to Backend
+    US_GW & EU_GW & APAC_GW -->|"5: Route"| Backends
+
+    %% Gateway to Redis
+    US_GW & EU_GW & APAC_GW -->|"6: Rate Limit"| Redis
+
+    %% Gateway to ES
+    US_GW & EU_GW & APAC_GW -->|"7: Analytics"| ES
+
+    %% Control Plane Data
+    Console & MgmtAPI & Portal --> MongoDB
+    
+    %% Config Sync
+    MongoDB -.->|"Config Sync"| US_GW & EU_GW & APAC_GW
