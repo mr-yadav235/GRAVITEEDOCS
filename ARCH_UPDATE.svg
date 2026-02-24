@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1150">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1010">
   <defs>
     <!-- Gradients -->
     <linearGradient id="globalLbGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -30,21 +30,21 @@
       <stop offset="0%" style="stop-color:#4527a0;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#7e57c2;stop-opacity:1" />
     </linearGradient>
-    <linearGradient id="innerDmzGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="openamGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#e65100;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#ff9800;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="openamGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#d84315;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#ff7043;stop-opacity:1" />
     </linearGradient>
     <linearGradient id="nodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#1565c0;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#42a5f5;stop-opacity:1" />
     </linearGradient>
-    <linearGradient id="corpZoneGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#7b1fa2;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#ba68c8;stop-opacity:1" />
+    <linearGradient id="coreZoneGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8f5e9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c8e6c9;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="userGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#546e7a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#78909c;stop-opacity:1" />
     </linearGradient>
     
     <!-- Drop Shadow -->
@@ -71,370 +71,368 @@
   </defs>
   
   <!-- Background -->
-  <rect width="1400" height="1150" fill="#f5f5f5"/>
+  <rect width="1400" height="1000" fill="#fafafa"/>
   
   <!-- Title -->
-  <text x="700" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#1a237e">
-    Core Zone - High-Level Design (HLD) Architecture
+  <text x="700" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#1a237e">
+    Internal API Gateway - High-Level Design (HLD) Architecture
   </text>
-  <text x="700" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#616161">
-    Internal API Gateway | Multi-Region Data Plane | Shared Control Plane | OpenAM SSO (Inner DMZ)
-  </text>
-  
-  <!-- ==================== INNER DMZ SECTION ==================== -->
-  <rect x="20" y="70" width="1360" height="100" rx="10" fill="url(#innerDmzGrad)" stroke="#bf360c" stroke-width="2" filter="url(#shadow)"/>
-  <text x="700" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">
-    INNER DMZ - Authentication Layer
+  <text x="700" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#616161">
+    All Components in Core Zone | No DMZ Required | MongoDB External to K8s | Redis/ES in Cluster
   </text>
   
-  <!-- OpenAM SSO Server -->
-  <rect x="450" y="110" width="500" height="50" rx="8" fill="url(#openamGrad)" filter="url(#shadow)"/>
-  <text x="700" y="132" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">🔐 OpenAM SSO Server (OAuth 2.0 / OIDC Provider)</text>
-  <text x="700" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#ffccbc">/oauth2/authorize • /oauth2/token • /oauth2/introspect • /oauth2/jwks • Connected to LDAP/AD</text>
+  <!-- ==================== CORE ZONE CONTAINER ==================== -->
+  <rect x="15" y="60" width="1370" height="880" rx="15" fill="url(#coreZoneGrad)" stroke="#2e7d32" stroke-width="3"/>
+  <rect x="15" y="60" width="50" height="880" rx="15 0 0 15" fill="#2e7d32"/>
+  <text transform="translate(30, 550) rotate(-90)" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white">CORE ZONE</text>
+  
+  <text x="700" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1b5e20">
+    CORE ZONE - Single Zone Deployment (All Components Internal)
+  </text>
+  
+  <!-- ==================== CORPORATE USERS SECTION ==================== -->
+  <rect x="80" y="100" width="900" height="85" rx="8" fill="white" stroke="#546e7a" stroke-width="1" filter="url(#shadow)"/>
+  <text x="530" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#37474f">
+    CORPORATE USERS (Core Zone)
+  </text>
+  
+  <!-- API Developers -->
+  <rect x="100" y="130" width="130" height="45" rx="5" fill="url(#userGrad)" filter="url(#shadow)"/>
+  <text x="165" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">API Developers</text>
+  <text x="165" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#cfd8dc">Console Access :443</text>
+  
+  <!-- Platform Team -->
+  <rect x="250" y="130" width="130" height="45" rx="5" fill="url(#userGrad)" filter="url(#shadow)"/>
+  <text x="315" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Platform Team</text>
+  <text x="315" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#cfd8dc">Admin Access :443</text>
+  
+  <!-- App Developers -->
+  <rect x="400" y="130" width="130" height="45" rx="5" fill="url(#userGrad)" filter="url(#shadow)"/>
+  <text x="465" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">App Developers</text>
+  <text x="465" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#cfd8dc">Portal Access :443</text>
+  
+  <!-- API Consumer Apps -->
+  <rect x="550" y="130" width="160" height="45" rx="5" fill="#455a64" filter="url(#shadow)"/>
+  <text x="630" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">API Consumer Apps</text>
+  <text x="630" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#b0bec5">Microservices :8082</text>
+  
+  <!-- Internal Systems -->
+  <rect x="730" y="130" width="160" height="45" rx="5" fill="#455a64" filter="url(#shadow)"/>
+  <text x="810" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Internal Systems</text>
+  <text x="810" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#b0bec5">Service Accounts</text>
+  
+  <!-- ==================== OPENAM SSO (CORE ZONE) ==================== -->
+  <rect x="1000" y="100" width="360" height="85" rx="8" fill="white" stroke="#e65100" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="1000" y="100" width="360" height="25" rx="8 8 0 0" fill="url(#openamGrad)"/>
+  <text x="1180" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">OpenAM SSO (Core Zone)</text>
+  <text x="1180" y="142" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#424242">OAuth 2.0 / OIDC Provider</text>
+  <text x="1180" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#757575">/oauth2/authorize | /oauth2/token | /oauth2/introspect | /oauth2/jwks</text>
+  <text x="1180" y="174" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#9e9e9e">Connected to Corporate LDAP/AD | HTTPS :443</text>
   
   <!-- ==================== DATA PLANE SECTION ==================== -->
-  <rect x="20" y="185" width="900" height="430" rx="10" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" filter="url(#shadow)"/>
-  <text x="470" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1565c0">
-    CORE ZONE - DATA PLANE (Internal API Gateway)
+  <rect x="80" y="200" width="580" height="320" rx="10" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" filter="url(#shadow)"/>
+  <text x="370" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1565c0">
+    DATA PLANE - Internal API Gateway (Core Zone)
   </text>
-  
-  <!-- Internal Systems (Callers) -->
-  <rect x="40" y="230" width="120" height="50" rx="8" fill="#455a64" filter="url(#shadow)"/>
-  <text x="100" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Internal Systems</text>
-  <text x="100" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#b0bec5">API Consumers</text>
   
   <!-- Global Load Balancer -->
-  <rect x="200" y="230" width="160" height="50" rx="8" fill="url(#globalLbGrad)" filter="url(#shadow)"/>
-  <text x="280" y="253" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">Global Load Balancer</text>
-  <text x="280" y="268" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bbdefb">(GION LS / GLB)</text>
-  
-  <!-- Step 1 Arrow -->
-  <line x1="160" y1="255" x2="195" y2="255" stroke="#1976d2" stroke-width="3" marker-end="url(#arrowBlue)"/>
-  <circle cx="178" cy="245" r="12" fill="#1976d2"/>
-  <text x="178" y="249" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">1</text>
+  <rect x="100" y="240" width="160" height="45" rx="8" fill="url(#globalLbGrad)" filter="url(#shadow)"/>
+  <text x="180" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Global Load Balancer</text>
+  <text x="180" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#bbdefb">(Internal GSLB)</text>
   
   <!-- ===== US REGION ===== -->
-  <rect x="40" y="300" width="270" height="160" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
-  <text x="175" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#1b5e20">US REGION</text>
+  <rect x="100" y="295" width="170" height="110" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="185" y="313" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#1b5e20">US REGION</text>
   
-  <!-- US Regional LB -->
-  <rect x="55" y="330" width="100" height="30" rx="5" fill="url(#regionalLbGrad)" filter="url(#shadow)"/>
-  <text x="105" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Regional LB</text>
+  <rect x="110" y="325" width="70" height="22" rx="4" fill="url(#regionalLbGrad)"/>
+  <text x="145" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="white">Regional LB</text>
   
-  <!-- US K8s Cluster -->
-  <rect x="55" y="370" width="240" height="80" rx="5" fill="url(#k8sGrad)" filter="url(#shadow)"/>
-  <text x="175" y="388" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Kubernetes Cluster (US)</text>
+  <rect x="110" y="355" width="70" height="42" rx="4" fill="url(#nodeGrad)"/>
+  <text x="145" y="373" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="white">GW Node 1</text>
+  <text x="145" y="387" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#90caf9">:8082 (2 pods)</text>
   
-  <!-- US Worker Nodes -->
-  <rect x="65" y="400" width="105" height="40" rx="4" fill="url(#nodeGrad)" stroke="#0d47a1" stroke-width="1"/>
-  <text x="117" y="418" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">Gateway Node 1</text>
-  <text x="117" y="432" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#90caf9">Pod Replicas: 2</text>
-  
-  <rect x="180" y="400" width="105" height="40" rx="4" fill="url(#nodeGrad)" stroke="#0d47a1" stroke-width="1"/>
-  <text x="232" y="418" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">Gateway Node 2</text>
-  <text x="232" y="432" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#90caf9">Pod Replicas: 2</text>
+  <rect x="190" y="355" width="70" height="42" rx="4" fill="url(#nodeGrad)"/>
+  <text x="225" y="373" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="white">GW Node 2</text>
+  <text x="225" y="387" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#90caf9">:8082 (2 pods)</text>
   
   <!-- ===== EU REGION ===== -->
-  <rect x="325" y="300" width="270" height="160" rx="8" fill="#fff3e0" stroke="#ef6c00" stroke-width="2"/>
-  <text x="460" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#e65100">EU REGION</text>
+  <rect x="290" y="295" width="170" height="110" rx="8" fill="#fff3e0" stroke="#ef6c00" stroke-width="2"/>
+  <text x="375" y="313" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#e65100">EU REGION</text>
   
-  <!-- EU Regional LB -->
-  <rect x="340" y="330" width="100" height="30" rx="5" fill="url(#regionalLbGrad)" filter="url(#shadow)"/>
-  <text x="390" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Regional LB</text>
+  <rect x="300" y="325" width="70" height="22" rx="4" fill="url(#regionalLbGrad)"/>
+  <text x="335" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="white">Regional LB</text>
   
-  <!-- EU K8s Cluster -->
-  <rect x="340" y="370" width="240" height="80" rx="5" fill="url(#k8sGrad)" filter="url(#shadow)"/>
-  <text x="460" y="388" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Kubernetes Cluster (EU)</text>
+  <rect x="300" y="355" width="70" height="42" rx="4" fill="url(#nodeGrad)"/>
+  <text x="335" y="373" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="white">GW Node 1</text>
+  <text x="335" y="387" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#90caf9">:8082 (2 pods)</text>
   
-  <!-- EU Worker Nodes -->
-  <rect x="350" y="400" width="105" height="40" rx="4" fill="url(#nodeGrad)" stroke="#0d47a1" stroke-width="1"/>
-  <text x="402" y="418" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">Gateway Node 1</text>
-  <text x="402" y="432" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#90caf9">Pod Replicas: 2</text>
+  <rect x="380" y="355" width="70" height="42" rx="4" fill="url(#nodeGrad)"/>
+  <text x="415" y="373" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="white">GW Node 2</text>
+  <text x="415" y="387" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#90caf9">:8082 (2 pods)</text>
   
-  <rect x="465" y="400" width="105" height="40" rx="4" fill="url(#nodeGrad)" stroke="#0d47a1" stroke-width="1"/>
-  <text x="517" y="418" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">Gateway Node 2</text>
-  <text x="517" y="432" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#90caf9">Pod Replicas: 2</text>
+  <!-- ===== ASIA REGION ===== -->
+  <rect x="480" y="295" width="170" height="110" rx="8" fill="#fce4ec" stroke="#c2185b" stroke-width="2"/>
+  <text x="565" y="313" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#880e4f">ASIA REGION</text>
   
-  <!-- ===== APAC REGION ===== -->
-  <rect x="610" y="300" width="270" height="160" rx="8" fill="#fce4ec" stroke="#c2185b" stroke-width="2"/>
-  <text x="745" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#880e4f">APAC REGION</text>
+  <rect x="490" y="325" width="70" height="22" rx="4" fill="url(#regionalLbGrad)"/>
+  <text x="525" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="white">Regional LB</text>
   
-  <!-- APAC Regional LB -->
-  <rect x="625" y="330" width="100" height="30" rx="5" fill="url(#regionalLbGrad)" filter="url(#shadow)"/>
-  <text x="675" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Regional LB</text>
+  <rect x="490" y="355" width="70" height="42" rx="4" fill="url(#nodeGrad)"/>
+  <text x="525" y="373" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="white">GW Node 1</text>
+  <text x="525" y="387" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#90caf9">:8082 (2 pods)</text>
   
-  <!-- APAC K8s Cluster -->
-  <rect x="625" y="370" width="240" height="80" rx="5" fill="url(#k8sGrad)" filter="url(#shadow)"/>
-  <text x="745" y="388" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Kubernetes Cluster (APAC)</text>
+  <rect x="570" y="355" width="70" height="42" rx="4" fill="url(#nodeGrad)"/>
+  <text x="605" y="373" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="white">GW Node 2</text>
+  <text x="605" y="387" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#90caf9">:8082 (2 pods)</text>
   
-  <!-- APAC Worker Nodes -->
-  <rect x="635" y="400" width="105" height="40" rx="4" fill="url(#nodeGrad)" stroke="#0d47a1" stroke-width="1"/>
-  <text x="687" y="418" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">Gateway Node 1</text>
-  <text x="687" y="432" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#90caf9">Pod Replicas: 2</text>
+  <!-- Security & Policy Layers -->
+  <rect x="100" y="415" width="550" height="20" rx="5" fill="#00695c"/>
+  <text x="375" y="429" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">
+    TLS 1.2/1.3 | mTLS | JWT Validation | Rate Limiting | IP Filtering
+  </text>
   
-  <rect x="750" y="400" width="105" height="40" rx="4" fill="url(#nodeGrad)" stroke="#0d47a1" stroke-width="1"/>
-  <text x="802" y="418" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">Gateway Node 2</text>
-  <text x="802" y="432" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#90caf9">Pod Replicas: 2</text>
+  <rect x="100" y="440" width="550" height="20" rx="5" fill="#37474f"/>
+  <text x="375" y="454" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">
+    Policies: Transform | Cache | Quota | Circuit Breaker | Mock | Logging
+  </text>
   
-  <!-- Step 2 Arrows from Global LB to Regional LBs -->
-  <path d="M 280 280 L 280 292 L 105 292 L 105 325" stroke="#2e7d32" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
-  <path d="M 280 280 L 280 292 L 390 292 L 390 325" stroke="#2e7d32" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
-  <path d="M 280 280 L 280 292 L 675 292 L 675 325" stroke="#2e7d32" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
-  <circle cx="280" cy="290" r="12" fill="#2e7d32"/>
-  <text x="280" y="294" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">2</text>
-  
-  <!-- Step 3 Arrows from Regional LBs to K8s -->
-  <line x1="105" y1="360" x2="105" y2="368" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowBlue)"/>
-  <line x1="390" y1="360" x2="390" y2="368" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowBlue)"/>
-  <line x1="675" y1="360" x2="675" y2="368" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowBlue)"/>
-  <circle cx="175" cy="365" r="12" fill="#1976d2"/>
-  <text x="175" y="369" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">3</text>
-  
-  <!-- ===== API BACKENDS ===== -->
-  <rect x="40" y="480" width="400" height="55" rx="8" fill="#37474f" filter="url(#shadow)"/>
-  <text x="240" y="505" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">Internal API Backends</text>
-  <text x="240" y="522" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b0bec5">Microservices | Legacy Systems | Databases</text>
-  
-  <!-- Step 5 Arrow to Backends -->
-  <path d="M 175 450 L 175 465 L 240 475" stroke="#455a64" stroke-width="2" fill="none" marker-end="url(#arrowBlue)"/>
-  <circle cx="200" cy="465" r="12" fill="#455a64"/>
-  <text x="200" y="469" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">5</text>
-  
-  <!-- Step 4: Gateway to OpenAM (Inner DMZ) for Token Validation -->
-  <path d="M 175 400 L 175 380 L 50 380 L 50 135 L 450 135" stroke="#e65100" stroke-width="2" fill="none" marker-end="url(#arrowOrange)" stroke-dasharray="5,3"/>
-  <circle cx="120" cy="380" r="12" fill="#e65100"/>
-  <text x="120" y="384" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">4</text>
-  <text x="180" y="378" font-family="Arial, sans-serif" font-size="8" fill="#e65100">JWT/Token Validation</text>
-  
-  <!-- Response Arrow -->
-  <path d="M 240 480 Q 260 450 280 255 L 160 255" stroke="#78909c" stroke-width="2" fill="none" marker-end="url(#arrowBlue)" stroke-dasharray="8,4"/>
-  <text x="265" y="420" font-family="Arial, sans-serif" font-size="8" fill="#546e7f" transform="rotate(-70, 265, 420)">Response</text>
+  <rect x="100" y="465" width="550" height="20" rx="5" fill="#546e7a"/>
+  <text x="375" y="479" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">
+    Analytics Collection | Request/Response Logging | Metrics Export
+  </text>
   
   <!-- ==================== CONTROL PLANE SECTION ==================== -->
-  <rect x="940" y="185" width="440" height="430" rx="10" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" filter="url(#shadow)"/>
-  <text x="1160" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#6a1b9a">
-    CORE ZONE - CONTROL PLANE (Shared)
+  <rect x="680" y="200" width="680" height="320" rx="10" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" filter="url(#shadow)"/>
+  <text x="1020" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#6a1b9a">
+    CONTROL PLANE - Kubernetes Cluster (Core Zone)
   </text>
   
-  <!-- Control Plane K8s Cluster -->
-  <rect x="960" y="225" width="400" height="240" rx="8" fill="url(#controlPlaneGrad)" filter="url(#shadow)"/>
-  <text x="1160" y="247" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">Kubernetes Cluster - Management</text>
+  <!-- Management Components Row -->
+  <rect x="700" y="245" width="200" height="60" rx="5" fill="#9c27b0" stroke="#4a148c" stroke-width="1" filter="url(#shadow)"/>
+  <text x="800" y="268" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Console UI</text>
+  <text x="800" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e1bee7">Management Interface</text>
+  <text x="800" y="297" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#ce93d8">HTTPS :443 | 2 Replicas</text>
   
-  <!-- Management UI -->
-  <rect x="980" y="260" width="110" height="50" rx="5" fill="#9c27b0" stroke="#4a148c" stroke-width="1"/>
-  <text x="1035" y="282" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Management UI</text>
-  <text x="1035" y="297" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#e1bee7">Console Portal</text>
+  <rect x="920" y="245" width="200" height="60" rx="5" fill="#9c27b0" stroke="#4a148c" stroke-width="1" filter="url(#shadow)"/>
+  <text x="1020" y="268" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Management API</text>
+  <text x="1020" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e1bee7">REST API Backend</text>
+  <text x="1020" y="297" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#ce93d8">HTTPS :8083 | 2 Replicas</text>
   
-  <!-- Management API -->
-  <rect x="1110" y="260" width="110" height="50" rx="5" fill="#9c27b0" stroke="#4a148c" stroke-width="1"/>
-  <text x="1165" y="282" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Management API</text>
-  <text x="1165" y="297" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#e1bee7">REST API</text>
+  <rect x="1140" y="245" width="200" height="60" rx="5" fill="#9c27b0" stroke="#4a148c" stroke-width="1" filter="url(#shadow)"/>
+  <text x="1240" y="268" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Developer Portal</text>
+  <text x="1240" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e1bee7">API Catalog</text>
+  <text x="1240" y="297" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#ce93d8">HTTPS :443 | 2 Replicas</text>
   
-  <!-- Developer Portal -->
-  <rect x="1240" y="260" width="110" height="50" rx="5" fill="#9c27b0" stroke="#4a148c" stroke-width="1"/>
-  <text x="1295" y="282" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Developer Portal</text>
-  <text x="1295" y="297" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#e1bee7">API Catalog</text>
-  
-  <!-- Auth arrows from Control Plane to OpenAM -->
-  <path d="M 1035 260 L 1035 200 L 900 200 L 900 135 L 950 135" stroke="#e65100" stroke-width="2" fill="none" marker-end="url(#arrowOrange)" stroke-dasharray="5,3"/>
-  <path d="M 1295 260 L 1295 215 L 915 215 L 915 135 L 950 135" stroke="#e65100" stroke-width="2" fill="none" stroke-dasharray="5,3"/>
-  <text x="970" y="195" font-family="Arial, sans-serif" font-size="8" fill="#e65100">Console/Portal Login</text>
-  
-  <!-- Database -->
-  <rect x="980" y="325" width="170" height="55" rx="5" fill="url(#dbGrad)" filter="url(#shadow)"/>
-  <text x="1065" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">MongoDB</text>
-  <text x="1065" y="367" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#d1c4e9">API Definitions | Config | Plans</text>
+  <!-- Data Services Row (Redis + Elasticsearch INSIDE Control Plane) -->
+  <rect x="700" y="320" width="640" height="80" rx="5" fill="#eceff1" stroke="#607d8b" stroke-width="1"/>
+  <text x="1020" y="338" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#37474f">Data Services (In-Cluster)</text>
   
   <!-- Redis -->
-  <rect x="1170" y="325" width="180" height="55" rx="5" fill="url(#redisGrad)" filter="url(#shadow)"/>
-  <text x="1260" y="347" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Redis (Shared)</text>
-  <text x="1260" y="363" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#ffcdd2">Rate Limiting | Caching</text>
+  <rect x="720" y="350" width="280" height="40" rx="5" fill="url(#redisGrad)" filter="url(#shadow)"/>
+  <text x="860" y="368" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Redis Cluster</text>
+  <text x="860" y="382" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#ffcdd2">Rate Limiting | Caching | Session | TLS :6379 | 6 nodes</text>
   
   <!-- Elasticsearch -->
-  <rect x="980" y="395" width="370" height="55" rx="5" fill="url(#esGrad)" filter="url(#shadow)"/>
-  <text x="1165" y="418" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#3e2723">Elasticsearch</text>
-  <text x="1165" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4e342e">Analytics | Logs | Metrics | API Usage Data</text>
+  <rect x="1020" y="350" width="300" height="40" rx="5" fill="url(#esGrad)" filter="url(#shadow)"/>
+  <text x="1170" y="368" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#3e2723">Elasticsearch Cluster</text>
+  <text x="1170" y="382" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#5d4037">Analytics | Logs | Metrics | HTTPS :9200 | 3 nodes</text>
   
-  <!-- Config Sync Label -->
-  <rect x="960" y="475" width="420" height="30" rx="5" fill="#7c4dff" opacity="0.3"/>
-  <text x="1160" y="495" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#311b92">
-    API Configuration Sync to Data Plane Gateways
+  <!-- Infrastructure Services Row -->
+  <rect x="700" y="410" width="640" height="45" rx="5" fill="white" stroke="#9e9e9e" stroke-width="1"/>
+  <text x="1020" y="428" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#37474f">Infrastructure Services</text>
+  
+  <rect x="710" y="435" width="60" height="14" rx="3" fill="#eceff1" stroke="#9e9e9e"/>
+  <text x="740" y="445" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#616161">NTP :123</text>
+  
+  <rect x="780" y="435" width="60" height="14" rx="3" fill="#eceff1" stroke="#9e9e9e"/>
+  <text x="810" y="445" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#616161">DNS :53</text>
+  
+  <rect x="850" y="435" width="80" height="14" rx="3" fill="#eceff1" stroke="#9e9e9e"/>
+  <text x="890" y="445" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#616161">LDAP :389,636</text>
+  
+  <rect x="940" y="435" width="60" height="14" rx="3" fill="#eceff1" stroke="#9e9e9e"/>
+  <text x="970" y="445" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#616161">SMTP :25</text>
+  
+  <rect x="1010" y="435" width="60" height="14" rx="3" fill="#eceff1" stroke="#9e9e9e"/>
+  <text x="1040" y="445" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#616161">PKI/CA</text>
+  
+  <rect x="1080" y="435" width="80" height="14" rx="3" fill="#e3f2fd" stroke="#326ce5"/>
+  <text x="1120" y="445" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#326ce5">K8s API :6443</text>
+  
+  <!-- RBAC Banner -->
+  <rect x="700" y="465" width="640" height="22" rx="5" fill="#311b92"/>
+  <text x="1020" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">
+    RBAC: Group-based Permissions | Sharding Tags | Environment Separation | API Ownership
   </text>
+  
+  <!-- ==================== MONGODB SECTION (EXTERNAL TO CLUSTER) ==================== -->
+  <rect x="80" y="535" width="580" height="90" rx="10" fill="white" stroke="#4527a0" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="80" y="535" width="580" height="25" rx="10 10 0 0" fill="url(#dbGrad)"/>
+  <text x="370" y="552" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    MongoDB Cluster (Core Zone - External to K8s Cluster)
+  </text>
+  
+  <rect x="100" y="570" width="160" height="45" rx="5" fill="#ede7f6" stroke="#7e57c2" stroke-width="1"/>
+  <text x="180" y="590" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4527a0">Primary Node</text>
+  <text x="180" y="605" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#757575">Read/Write | :27017</text>
+  
+  <rect x="280" y="570" width="160" height="45" rx="5" fill="#ede7f6" stroke="#7e57c2" stroke-width="1"/>
+  <text x="360" y="590" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4527a0">Secondary Node 1</text>
+  <text x="360" y="605" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#757575">Read Replica | :27017</text>
+  
+  <rect x="460" y="570" width="160" height="45" rx="5" fill="#ede7f6" stroke="#7e57c2" stroke-width="1"/>
+  <text x="540" y="590" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4527a0">Secondary Node 2</text>
+  <text x="540" y="605" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#757575">Read Replica | :27017</text>
+  
+  <!-- MongoDB Data Description -->
+  <text x="370" y="620" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#616161">
+    API Definitions | Plans | Subscriptions | Users | Audit Logs | TLS Encrypted | Replica Set
+  </text>
+  
+  <!-- ==================== BACKEND SERVICES ==================== -->
+  <rect x="680" y="535" width="680" height="90" rx="10" fill="white" stroke="#263238" stroke-width="2" filter="url(#shadow)"/>
+  <text x="1020" y="555" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#263238">
+    BACKEND SERVICES (Core Zone)
+  </text>
+  
+  <rect x="700" y="570" width="150" height="45" rx="5" fill="#eceff1" stroke="#607d8b"/>
+  <text x="775" y="590" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#424242">Microservices</text>
+  <text x="775" y="605" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#757575">REST/gRPC</text>
+  
+  <rect x="860" y="570" width="150" height="45" rx="5" fill="#eceff1" stroke="#607d8b"/>
+  <text x="935" y="590" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#424242">Legacy Systems</text>
+  <text x="935" y="605" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#757575">SOAP/EAI</text>
+  
+  <rect x="1020" y="570" width="150" height="45" rx="5" fill="#eceff1" stroke="#607d8b"/>
+  <text x="1095" y="590" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#424242">Databases</text>
+  <text x="1095" y="605" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#757575">SQL/NoSQL</text>
+  
+  <rect x="1180" y="570" width="160" height="45" rx="5" fill="#eceff1" stroke="#607d8b"/>
+  <text x="1260" y="590" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#424242">Message Queues</text>
+  <text x="1260" y="605" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#757575">Kafka/RabbitMQ</text>
   
   <!-- ==================== FLOW ARROWS ==================== -->
   
-  <!-- Step 6: Gateway to Redis (Rate Limit/Cache) -->
-  <path d="M 802 450 Q 870 490 960 360" stroke="#c62828" stroke-width="2" fill="none" marker-end="url(#arrowRed)" stroke-dasharray="5,3"/>
-  <circle cx="870" cy="460" r="12" fill="#c62828"/>
-  <text x="870" y="464" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">6</text>
-  <text x="895" y="480" font-family="Arial, sans-serif" font-size="8" fill="#c62828">Rate Limit</text>
+  <!-- Users to OpenAM Authentication -->
+  <path d="M 315 175 L 315 187 L 1000 187 L 1000 145" stroke="#e65100" stroke-width="2" fill="none" marker-end="url(#arrowOrange)"/>
+  <circle cx="650" cy="187" r="10" fill="#e65100"/>
+  <text x="650" y="191" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">1</text>
   
-  <!-- Step 7: Analytics to ES -->
-  <path d="M 580 460 Q 850 520 980 430" stroke="#f57f17" stroke-width="2" fill="none" marker-end="url(#arrowOrange)" stroke-dasharray="5,3"/>
-  <circle cx="780" cy="500" r="12" fill="#f57f17"/>
-  <text x="780" y="504" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">7</text>
-  <text x="820" y="515" font-family="Arial, sans-serif" font-size="8" fill="#e65100">Analytics</text>
+  <!-- API Consumers to Gateway -->
+  <path d="M 630 175 L 630 192 L 180 192 L 180 240" stroke="#1976d2" stroke-width="2" fill="none" marker-end="url(#arrowBlue)"/>
+  <circle cx="400" cy="192" r="10" fill="#1976d2"/>
+  <text x="400" y="196" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">2</text>
   
-  <!-- Config Sync from Control Plane to Gateways -->
-  <path d="M 960 490 Q 800 530 460 470" stroke="#7b1fa2" stroke-width="2" fill="none" marker-end="url(#arrowPurple)" stroke-dasharray="8,4"/>
-  <text x="700" y="510" font-family="Arial, sans-serif" font-size="8" fill="#7b1fa2">Config Sync (Pull)</text>
+  <!-- GSLB to Regional LBs -->
+  <path d="M 180 285 L 180 290 L 145 290 L 145 325" stroke="#2e7d32" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
+  <path d="M 180 290 L 335 290 L 335 325" stroke="#2e7d32" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
+  <path d="M 180 290 L 525 290 L 525 325" stroke="#2e7d32" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
+  <circle cx="260" cy="290" r="10" fill="#2e7d32"/>
+  <text x="260" y="294" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">3</text>
   
-  <!-- ==================== CORPORATE ZONE (Users) ==================== -->
-  <rect x="940" y="520" width="440" height="95" rx="10" fill="url(#corpZoneGrad)" filter="url(#shadow)"/>
-  <text x="1160" y="545" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
-    CORPORATE ZONE (Admin Users)
-  </text>
+  <!-- Gateway to OpenAM (Token Validation) -->
+  <path d="M 650 370 L 672 370 L 672 145 L 1000 145" stroke="#c62828" stroke-width="2" fill="none" marker-end="url(#arrowRed)" stroke-dasharray="4,2,8,2"/>
+  <circle cx="672" cy="255" r="10" fill="#c62828"/>
+  <text x="672" y="259" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">4</text>
+  <text x="687" y="310" font-family="Arial, sans-serif" font-size="7" fill="#c62828" transform="rotate(-90, 687, 310)">JWT Validation</text>
   
-  <rect x="960" y="555" width="130" height="50" rx="5" fill="rgba(255,255,255,0.2)"/>
-  <text x="1025" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">👤 API Developers</text>
-  <text x="1025" y="592" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#e1bee7">Console Access</text>
+  <!-- Control Plane to MongoDB (External) -->
+  <path d="M 1020 305 L 1020 320 L 680 505 L 370 505 L 370 535" stroke="#4527a0" stroke-width="2" fill="none" marker-end="url(#arrowPurple)" stroke-dasharray="8,4"/>
+  <circle cx="680" cy="505" r="10" fill="#4527a0"/>
+  <text x="680" y="509" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">5</text>
+  <text x="530" y="497" font-family="Arial, sans-serif" font-size="7" fill="#4527a0">Config Read/Write</text>
   
-  <rect x="1105" y="555" width="130" height="50" rx="5" fill="rgba(255,255,255,0.2)"/>
-  <text x="1170" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">👤 Platform Team</text>
-  <text x="1170" y="592" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#e1bee7">Admin Access</text>
+  <!-- Gateway to MongoDB (Config Sync) -->
+  <path d="M 370 490 L 370 535" stroke="#7b1fa2" stroke-width="2" fill="none" marker-end="url(#arrowPurple)" stroke-dasharray="8,4"/>
+  <circle cx="370" cy="512" r="10" fill="#7b1fa2"/>
+  <text x="370" y="516" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">6</text>
+  <text x="400" y="510" font-family="Arial, sans-serif" font-size="7" fill="#7b1fa2">Config Pull</text>
   
-  <rect x="1250" y="555" width="120" height="50" rx="5" fill="rgba(255,255,255,0.2)"/>
-  <text x="1310" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">👨‍💻 App Developers</text>
-  <text x="1310" y="592" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#e1bee7">Portal Access</text>
+  <!-- Gateway to Redis (In-Cluster) -->
+  <path d="M 550 415 L 550 410 L 680 410 L 680 370 L 720 370" stroke="#c62828" stroke-width="2" fill="none" marker-end="url(#arrowRed)" stroke-dasharray="5,3"/>
+  <text x="615" y="405" font-family="Arial, sans-serif" font-size="7" fill="#c62828">Rate Limit</text>
   
-  <!-- Arrow from Corporate Zone to Control Plane -->
-  <path d="M 1160 555 L 1160 520" stroke="#7b1fa2" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+  <!-- Gateway to Elasticsearch (In-Cluster) -->
+  <path d="M 600 440 L 660 440 L 660 370 L 1020 370" stroke="#f57f17" stroke-width="2" fill="none" marker-end="url(#arrowOrange)" stroke-dasharray="5,3"/>
+  <text x="830" y="362" font-family="Arial, sans-serif" font-size="7" fill="#f57f17">Analytics</text>
   
-  <!-- ==================== AUTH FLOW SECTION ==================== -->
-  <rect x="20" y="635" width="1360" height="200" rx="10" fill="#e8eaf6" stroke="#3f51b5" stroke-width="2" filter="url(#shadow)"/>
-  <text x="700" y="660" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#283593">
-    AUTHENTICATION FLOWS (via OpenAM - Inner DMZ)
-  </text>
+  <!-- Gateway to Backends -->
+  <path d="M 550 490 L 550 595 L 700 595" stroke="#455a64" stroke-width="2" fill="none" marker-end="url(#arrowBlue)"/>
+  <circle cx="550" cy="550" r="10" fill="#455a64"/>
+  <text x="550" y="554" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">7</text>
   
-  <!-- Flow 1: Console/Portal Login -->
-  <text x="40" y="690" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a237e">Flow 1: Console/Portal Login (OAuth 2.0)</text>
-  
-  <!-- Admin User -->
-  <rect x="40" y="705" width="100" height="50" rx="8" fill="#546e7f" filter="url(#shadow)"/>
-  <text x="90" y="728" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">👤 Admin User</text>
-  <text x="90" y="743" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#cfd8dc">(Corporate Zone)</text>
-  
-  <line x1="140" y1="730" x2="175" y2="730" stroke="#3f51b5" stroke-width="2" marker-end="url(#arrowBlue)"/>
-  <circle cx="158" cy="718" r="10" fill="#3f51b5"/>
-  <text x="158" y="722" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">A</text>
-  
-  <!-- Console UI -->
-  <rect x="180" y="705" width="100" height="50" rx="8" fill="#9c27b0" filter="url(#shadow)"/>
-  <text x="230" y="728" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">Console UI</text>
-  <text x="230" y="743" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#e1bee7">(Core Zone)</text>
-  
-  <line x1="280" y1="730" x2="315" y2="730" stroke="#3f51b5" stroke-width="2" marker-end="url(#arrowBlue)"/>
-  <circle cx="298" cy="718" r="10" fill="#3f51b5"/>
-  <text x="298" y="722" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">B</text>
-  
-  <!-- OpenAM -->
-  <rect x="320" y="705" width="130" height="50" rx="8" fill="url(#openamGrad)" filter="url(#shadow)"/>
-  <text x="385" y="725" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">🔐 OpenAM SSO</text>
-  <text x="385" y="740" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#ffccbc">(Inner DMZ)</text>
-  <text x="385" y="752" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#ffccbc">OAuth2 / OIDC</text>
-  
-  <line x1="450" y1="730" x2="485" y2="730" stroke="#2e7d32" stroke-width="2" marker-end="url(#arrowGreen)"/>
-  <circle cx="468" cy="718" r="10" fill="#2e7d32"/>
-  <text x="468" y="722" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">C</text>
-  
-  <!-- JWT Token -->
-  <rect x="490" y="705" width="100" height="50" rx="8" fill="#00695c" filter="url(#shadow)"/>
-  <text x="540" y="725" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">JWT Token</text>
-  <text x="540" y="740" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#a7ffeb">+ User Session</text>
-  
-  <path d="M 540 755 Q 540 775 230 775 Q 230 775 230 755" stroke="#1976d2" stroke-width="2" fill="none" marker-end="url(#arrowBlue)" stroke-dasharray="5,3"/>
-  <circle cx="385" cy="780" r="10" fill="#1976d2"/>
-  <text x="385" y="784" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">D</text>
-  <text x="385" y="800" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#1565c0">Return to Console with JWT</text>
-  
-  <!-- Flow 2: API Call Authentication -->
-  <text x="640" y="690" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a237e">Flow 2: API Call Authentication (OAuth 2.0)</text>
-  
-  <!-- API Consumer -->
-  <rect x="640" y="705" width="100" height="50" rx="8" fill="#455a64" filter="url(#shadow)"/>
-  <text x="690" y="728" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">📱 API Consumer</text>
-  <text x="690" y="743" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#b0bec5">(Core Zone)</text>
-  
-  <line x1="740" y1="730" x2="775" y2="730" stroke="#3f51b5" stroke-width="2" marker-end="url(#arrowBlue)"/>
-  <circle cx="758" cy="718" r="10" fill="#3f51b5"/>
-  <text x="758" y="722" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">1</text>
-  
-  <!-- Get Token -->
-  <rect x="780" y="705" width="100" height="50" rx="8" fill="url(#openamGrad)" filter="url(#shadow)"/>
-  <text x="830" y="725" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">🔐 OpenAM</text>
-  <text x="830" y="740" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#ffccbc">/oauth2/token</text>
-  
-  <line x1="880" y1="730" x2="915" y2="730" stroke="#2e7d32" stroke-width="2" marker-end="url(#arrowGreen)"/>
-  <circle cx="898" cy="718" r="10" fill="#2e7d32"/>
-  <text x="898" y="722" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">2</text>
-  
-  <!-- Call Gateway -->
-  <rect x="920" y="705" width="100" height="50" rx="8" fill="url(#nodeGrad)" filter="url(#shadow)"/>
-  <text x="970" y="725" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">⚡ API Gateway</text>
-  <text x="970" y="740" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#90caf9">Bearer Token</text>
-  
-  <line x1="1020" y1="730" x2="1055" y2="730" stroke="#e65100" stroke-width="2" marker-end="url(#arrowOrange)" stroke-dasharray="5,3"/>
-  <circle cx="1038" cy="718" r="10" fill="#e65100"/>
-  <text x="1038" y="722" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">3</text>
-  
-  <!-- Validate Token -->
-  <rect x="1060" y="705" width="100" height="50" rx="8" fill="url(#openamGrad)" filter="url(#shadow)"/>
-  <text x="1110" y="725" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">🔐 OpenAM</text>
-  <text x="1110" y="740" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#ffccbc">/introspect or JWKS</text>
-  
-  <line x1="1160" y1="730" x2="1195" y2="730" stroke="#2e7d32" stroke-width="2" marker-end="url(#arrowGreen)"/>
-  <circle cx="1178" cy="718" r="10" fill="#2e7d32"/>
-  <text x="1178" y="722" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">4</text>
-  
-  <!-- Backend -->
-  <rect x="1200" y="705" width="100" height="50" rx="8" fill="#37474f" filter="url(#shadow)"/>
-  <text x="1250" y="725" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">🔧 Backend API</text>
-  <text x="1250" y="740" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#b0bec5">(Core Zone)</text>
-  
-  <path d="M 1250 755 Q 1250 785 690 785 Q 690 785 690 755" stroke="#78909c" stroke-width="2" fill="none" marker-end="url(#arrowBlue)" stroke-dasharray="5,3"/>
-  <circle cx="970" cy="790" r="10" fill="#78909c"/>
-  <text x="970" y="794" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">5</text>
-  <text x="970" y="810" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#546e7a">Response</text>
+  <!-- Control Plane Auth to OpenAM -->
+  <path d="M 800 245 L 800 220 L 1100 220 L 1100 185" stroke="#e65100" stroke-width="2" fill="none" stroke-dasharray="5,3"/>
+  <text x="950" y="212" font-family="Arial, sans-serif" font-size="7" fill="#e65100">OAuth Login</text>
   
   <!-- ==================== LEGEND ==================== -->
-  <rect x="20" y="855" width="1360" height="90" rx="10" fill="white" stroke="#9e9e9e" stroke-width="1"/>
-  <text x="700" y="875" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#424242">LEGEND</text>
-  
-  <!-- Zone Legend -->
-  <rect x="50" y="890" width="80" height="20" rx="3" fill="url(#innerDmzGrad)"/>
-  <text x="140" y="904" font-family="Arial, sans-serif" font-size="10" fill="#424242">Inner DMZ</text>
-  
-  <rect x="210" y="890" width="80" height="20" rx="3" fill="#e3f2fd" stroke="#1976d2"/>
-  <text x="300" y="904" font-family="Arial, sans-serif" font-size="10" fill="#424242">Core Zone</text>
-  
-  <rect x="380" y="890" width="80" height="20" rx="3" fill="url(#corpZoneGrad)"/>
-  <text x="470" y="904" font-family="Arial, sans-serif" font-size="10" fill="#424242">Corporate Zone</text>
+  <rect x="80" y="640" width="1280" height="180" rx="10" fill="white" stroke="#9e9e9e" stroke-width="1"/>
+  <text x="720" y="665" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#424242">LEGEND</text>
   
   <!-- Component Legend -->
-  <rect x="560" y="890" width="40" height="20" rx="3" fill="url(#openamGrad)"/>
-  <text x="610" y="904" font-family="Arial, sans-serif" font-size="10" fill="#424242">OpenAM</text>
+  <rect x="100" y="685" width="50" height="16" rx="3" fill="url(#openamGrad)"/>
+  <text x="160" y="697" font-family="Arial, sans-serif" font-size="9" fill="#424242">OpenAM SSO</text>
   
-  <rect x="680" y="890" width="40" height="20" rx="3" fill="url(#k8sGrad)"/>
-  <text x="730" y="904" font-family="Arial, sans-serif" font-size="10" fill="#424242">Gateway</text>
+  <rect x="240" y="685" width="50" height="16" rx="3" fill="url(#k8sGrad)"/>
+  <text x="300" y="697" font-family="Arial, sans-serif" font-size="9" fill="#424242">API Gateway</text>
   
-  <rect x="800" y="890" width="40" height="20" rx="3" fill="url(#redisGrad)"/>
-  <text x="850" y="904" font-family="Arial, sans-serif" font-size="10" fill="#424242">Redis</text>
+  <rect x="380" y="685" width="50" height="16" rx="3" fill="url(#dbGrad)"/>
+  <text x="440" y="697" font-family="Arial, sans-serif" font-size="9" fill="#424242">MongoDB (External)</text>
   
-  <rect x="910" y="890" width="40" height="20" rx="3" fill="url(#esGrad)"/>
-  <text x="960" y="904" font-family="Arial, sans-serif" font-size="10" fill="#424242">Elasticsearch</text>
+  <rect x="560" y="685" width="50" height="16" rx="3" fill="url(#redisGrad)"/>
+  <text x="620" y="697" font-family="Arial, sans-serif" font-size="9" fill="#424242">Redis (In-Cluster)</text>
   
-  <rect x="1040" y="890" width="40" height="20" rx="3" fill="url(#dbGrad)"/>
-  <text x="1090" y="904" font-family="Arial, sans-serif" font-size="10" fill="#424242">MongoDB</text>
+  <rect x="730" y="685" width="50" height="16" rx="3" fill="url(#esGrad)"/>
+  <text x="790" y="697" font-family="Arial, sans-serif" font-size="9" fill="#424242">ES (In-Cluster)</text>
+  
+  <rect x="880" y="685" width="50" height="16" rx="3" fill="#9c27b0"/>
+  <text x="940" y="697" font-family="Arial, sans-serif" font-size="9" fill="#424242">Control Plane</text>
   
   <!-- Flow Legend -->
-  <circle cx="1160" cy="900" r="10" fill="#1976d2"/>
-  <text x="1160" y="904" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">1</text>
-  <text x="1180" y="904" font-family="Arial, sans-serif" font-size="10" fill="#424242">= API Flow</text>
+  <line x1="1020" y1="693" x2="1070" y2="693" stroke="#424242" stroke-width="2"/>
+  <text x="1080" y="697" font-family="Arial, sans-serif" font-size="9" fill="#424242">Data Flow</text>
   
-  <circle cx="1260" cy="900" r="10" fill="#3f51b5"/>
-  <text x="1260" y="904" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">A</text>
-  <text x="1280" y="904" font-family="Arial, sans-serif" font-size="10" fill="#424242">= Auth Flow</text>
+  <line x1="1150" y1="693" x2="1200" y2="693" stroke="#7b1fa2" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="1210" y="697" font-family="Arial, sans-serif" font-size="9" fill="#424242">Config/Admin</text>
+  
+  <line x1="1280" y1="693" x2="1330" y2="693" stroke="#c62828" stroke-width="2" stroke-dasharray="4,2,8,2"/>
+  <text x="1340" y="697" font-family="Arial, sans-serif" font-size="9" fill="#424242">Security</text>
+  
+  <!-- Numbered Flow Explanations -->
+  <text x="720" y="720" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#37474f">NUMBERED FLOW DESCRIPTIONS</text>
+  
+  <!-- Row 1 -->
+  <circle cx="110" cy="745" r="10" fill="#e65100"/>
+  <text x="110" y="749" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">1</text>
+  <text x="130" y="749" font-family="Arial, sans-serif" font-size="9" fill="#424242">User Authentication: Corporate Users authenticate with OpenAM SSO (OAuth 2.0/OIDC)</text>
+  
+  <circle cx="710" cy="745" r="10" fill="#1976d2"/>
+  <text x="710" y="749" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">2</text>
+  <text x="730" y="749" font-family="Arial, sans-serif" font-size="9" fill="#424242">API Request: Consumer Apps send API requests to Global Load Balancer</text>
+  
+  <!-- Row 2 -->
+  <circle cx="110" cy="768" r="10" fill="#2e7d32"/>
+  <text x="110" y="772" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">3</text>
+  <text x="130" y="772" font-family="Arial, sans-serif" font-size="9" fill="#424242">Load Distribution: GSLB routes traffic to Regional LBs (US/EU/ASIA)</text>
+  
+  <circle cx="710" cy="768" r="10" fill="#c62828"/>
+  <text x="710" y="772" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">4</text>
+  <text x="730" y="772" font-family="Arial, sans-serif" font-size="9" fill="#424242">Token Validation: Gateway validates JWT tokens with OpenAM (introspect/JWKS)</text>
+  
+  <!-- Row 3 -->
+  <circle cx="110" cy="791" r="10" fill="#4527a0"/>
+  <text x="110" y="795" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">5</text>
+  <text x="130" y="795" font-family="Arial, sans-serif" font-size="9" fill="#424242">Config Management: Control Plane reads/writes API configs to MongoDB (external)</text>
+  
+  <circle cx="710" cy="791" r="10" fill="#7b1fa2"/>
+  <text x="710" y="795" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">6</text>
+  <text x="730" y="795" font-family="Arial, sans-serif" font-size="9" fill="#424242">Config Sync: Gateway pulls API definitions from MongoDB (pull-based sync)</text>
+  
+  <!-- Row 4 -->
+  <circle cx="110" cy="814" r="10" fill="#455a64"/>
+  <text x="110" y="818" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">7</text>
+  <text x="130" y="818" font-family="Arial, sans-serif" font-size="9" fill="#424242">Backend Routing: Gateway proxies validated requests to Backend Services (mTLS/TLS)</text>
   
   <!-- Version -->
-  <text x="1350" y="940" text-anchor="end" font-family="Arial, sans-serif" font-size="8" fill="#9e9e9e">v2.0 | Core Zone HLD with OpenAM (Inner DMZ)</text>
+  <text x="1340" y="985" text-anchor="end" font-family="Arial, sans-serif" font-size="8" fill="#9e9e9e">v3.3 | Internal Gateway HLD - Core Zone Only | MongoDB External</text>
 </svg>
