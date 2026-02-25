@@ -427,22 +427,287 @@ reporters:
 
 ---
 
-## 8. Summary
+## 8. PII/MNPI Data Protection
+
+### 8.1 Data Residency Requirements
+
+PII (Personally Identifiable Information) and MNPI (Material Non-Public Information) data must remain within the JSZ Zone and must NOT be transmitted to the Core Zone.
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────┐
+│                           DATA RESIDENCY MODEL                                       │
+├─────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                      │
+│   CORE ZONE (No PII/MNPI)              FIREWALL         JSZ ZONE (PII/MNPI Allowed) │
+│   ┌─────────────────────┐             ║       ║        ┌─────────────────────────┐  │
+│   │ Elasticsearch       │◄────────────╫───────╫────────│ Gateway (Filtered)      │  │
+│   │ - API metrics only  │  Filtered   ║       ║        │ - Masks PII in logs     │  │
+│   │ - No request body   │  Analytics  ║       ║        │ - Excludes body data    │  │
+│   │ - No PII fields     │             ║       ║        │                         │  │
+│   └─────────────────────┘             ║       ║        └─────────────────────────┘  │
+│                                       ║       ║                    │                │
+│   ┌─────────────────────┐             ║       ║        ┌───────────▼───────────────┐│
+│   │ MongoDB             │             ║       ║        │ JSZ Local Database       ││
+│   │ - API configs only  │             ║ BLOCK ║        │ - Customer PII           ││
+│   │ - No customer data  │             ║  PII  ║        │ - Financial MNPI         ││
+│   └─────────────────────┘             ║       ║        │ - Transaction records    ││
+│                                       ║       ║        │ - Compliance audit logs  ││
+│                                       ║       ║        └──────────────────────────┘│
+│                                                                                      │
+└─────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 8.2 Data Classification
+
+| Data Type | Zone | Can Leave JSZ? | Example |
+|-----------|------|----------------|---------|
+| **PII** | JSZ Only | NO | Names, SSN, Email, Phone, Address |
+| **MNPI** | JSZ Only | NO | Trading data, Financial reports, Insider info |
+| **API Metrics** | Both | YES | Request count, Latency, Status codes |
+| **API Configs** | Core Zone | N/A | API definitions, Plans, Subscriptions |
+| **Error Codes** | Both | YES | HTTP status, Error types (no details) |
+
+### 8.3 Gateway Configuration for Data Filtering
+
+#### 8.3.1 Exclude Request/Response Body from Analytics
+
+```yaml
+# gravitee.yml - Reporter configuration
+reporters:
+  elasticsearch:
+    enabled: true
+    endpoints:
+      - https://elasticsearch.core-zone:9200
+    security:
+      username: ${ES_USERNAME}
+      password: ${ES_PASSWORD}
+    
+    # CRITICAL: Exclude request/response content
+    request:
+      exclude:
+        - body        # Never log request body (contains PII)
+        - headers:
+            - Authorization
+            - X-Customer-ID
+            - X-Account-Number
+            - Cookie
+            - Set-Cookie
+    
+    response:
+      exclude:
+        - body        # Never log response body (contains MNPI)
+        - headers:
+            - Set-Cookie
+            - X-Customer-Token
+    
+    # Only include safe metadata
+    request:
+      include:
+        - method
+        - path
+        - remote_address
+        - content_length
+    
+    response:
+      include:
+        - status
+        - content_length
+        - response_time
+```
+
+#### 8.3.2 Mask Sensitive Fields in Logs
+
+```yaml
+# gravitee.yml - Logging configuration with masking
+logging:
+  mask:
+    enabled: true
+    patterns:
+      # PII Patterns
+      - pattern: '"ssn"\s*:\s*"[^"]*"'
+        replacement: '"ssn":"***MASKED***"'
+      - pattern: '"email"\s*:\s*"[^"]*"'
+        replacement: '"email":"***MASKED***"'
+      - pattern: '"phone"\s*:\s*"[^"]*"'
+        replacement: '"phone":"***MASKED***"'
+      - pattern: '"creditCard"\s*:\s*"[^"]*"'
+        replacement: '"creditCard":"***MASKED***"'
+      - pattern: '"accountNumber"\s*:\s*"[^"]*"'
+        replacement: '"accountNumber":"***MASKED***"'
+      
+      # MNPI Patterns
+      - pattern: '"balance"\s*:\s*"[^"]*"'
+        replacement: '"balance":"***MASKED***"'
+      - pattern: '"tradingData"\s*:\s*"[^"]*"'
+        replacement: '"tradingData":"***MASKED***"'
+```
+
+#### 8.3.3 API-Level Logging Policy
+
+```json
+{
+  "name": "Logging Policy - PII Safe",
+  "policy": "logging",
+  "configuration": {
+    "scope": "REQUEST_RESPONSE",
+    "content": "NONE",
+    "condition": "",
+    "maxSizeLogMessage": 0,
+    "excludedResponseTypes": [
+      "application/json",
+      "application/xml"
+    ]
+  }
+}
+```
+
+### 8.4 Transform Policy for PII Removal
+
+Apply this policy to mask PII before analytics collection:
+
+```json
+{
+  "name": "PII-Masking-Policy",
+  "policy": "transform-headers",
+  "configuration": {
+    "removeHeaders": [
+      "X-Customer-ID",
+      "X-Account-Number",
+      "X-SSN",
+      "Authorization"
+    ],
+    "addHeaders": [
+      {
+        "name": "X-Request-Sanitized",
+        "value": "true"
+      }
+    ]
+  }
+}
+```
+
+### 8.5 Reporter Filter Configuration
+
+```yaml
+# gravitee.yml - Advanced reporter filtering
+reporters:
+  elasticsearch:
+    enabled: true
+    
+    # Filter what gets reported
+    filter:
+      # Only report these event types
+      include:
+        - REQUEST
+        - RESPONSE
+        - HEALTH_CHECK
+      
+      # Exclude specific APIs from detailed logging
+      exclude:
+        apis:
+          - "api-with-pii-data"
+          - "financial-transactions-api"
+    
+    # Field-level filtering
+    fields:
+      exclude:
+        - "request.body"
+        - "response.body"
+        - "request.headers.authorization"
+        - "request.headers.x-customer-*"
+        - "client.user"
+```
+
+### 8.6 Analytics Data Flow
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────┐
+│                    ANALYTICS FLOW WITH PII FILTERING                                 │
+├─────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                      │
+│   JSZ ZONE                                                                          │
+│   ┌───────────────────────────────────────────────────────────────────────────┐    │
+│   │                                                                            │    │
+│   │   ┌──────────────┐      ┌──────────────┐      ┌──────────────┐           │    │
+│   │   │ API Request  │      │ Gateway      │      │ PII Filter   │           │    │
+│   │   │ (with PII)   │─────►│ Processing   │─────►│ Policy       │           │    │
+│   │   └──────────────┘      └──────────────┘      └──────┬───────┘           │    │
+│   │                                                       │                   │    │
+│   │                                              Filtered │ Analytics         │    │
+│   │                                              (No PII) │                   │    │
+│   │                                                       ▼                   │    │
+│   │   ┌──────────────┐                           ┌──────────────┐            │    │
+│   │   │ Backend      │◄──────────────────────────│ Route to     │            │    │
+│   │   │ (PII stays)  │      Full Request         │ Backend      │            │    │
+│   │   └──────────────┘      (with PII)           └──────────────┘            │    │
+│   │                                                                            │    │
+│   └───────────────────────────────────────────────────────────────────────────┘    │
+│                                                       │                             │
+│                                                       │ Filtered Analytics          │
+│                                                       │ (metrics only)              │
+│                                                       ▼                             │
+│   ═══════════════════════════════════════════════════════════════════════════════  │
+│                                    FIREWALL                                         │
+│   ═══════════════════════════════════════════════════════════════════════════════  │
+│                                                       │                             │
+│                                                       ▼                             │
+│   CORE ZONE                                                                         │
+│   ┌───────────────────────────────────────────────────────────────────────────┐    │
+│   │   Elasticsearch receives:                                                  │    │
+│   │   ✓ Request method, path, status code                                     │    │
+│   │   ✓ Response time, content length                                         │    │
+│   │   ✓ API ID, Plan ID, Application ID                                       │    │
+│   │   ✓ Error codes (no details)                                              │    │
+│   │   ✗ NO request body                                                       │    │
+│   │   ✗ NO response body                                                      │    │
+│   │   ✗ NO PII headers                                                        │    │
+│   │   ✗ NO customer identifiers                                               │    │
+│   └───────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                      │
+└─────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 8.7 Verification Checklist
+
+| Check | Configuration | Verified |
+|-------|---------------|----------|
+| Request body excluded | `reporters.elasticsearch.request.exclude: body` | [ ] |
+| Response body excluded | `reporters.elasticsearch.response.exclude: body` | [ ] |
+| Auth headers excluded | `reporters.elasticsearch.request.exclude.headers` | [ ] |
+| PII masking enabled | `logging.mask.enabled: true` | [ ] |
+| Customer ID headers removed | Transform policy applied | [ ] |
+| API-level logging disabled for PII APIs | Logging policy: content=NONE | [ ] |
+
+### 8.8 Compliance Notes
+
+| Regulation | Requirement | Configuration |
+|------------|-------------|---------------|
+| **GDPR** | PII must not leave EU without consent | Keep PII in JSZ, filter analytics |
+| **CCPA** | Personal info must be protected | Mask PII in all logs |
+| **SOX** | Financial data audit trail | Log in JSZ only, not Core Zone |
+| **PCI-DSS** | Card data must be masked | Mask creditCard patterns |
+| **Japan APPI** | Personal data residency | PII stays in JSZ Zone |
+
+---
+
+## 9. Summary
 
 ### Key Points
 
 | Aspect | Configuration |
 |--------|---------------|
 | **MongoDB** | Core Zone (external to K8s) - Central config store |
-| **Elasticsearch** | Core Zone (in-cluster) - Centralized analytics |
+| **Elasticsearch** | Core Zone (in-cluster) - Filtered analytics only |
 | **Redis** | JSZ Zone (SZDP) - Local rate limiting |
 | **API Gateway** | JSZ Zone (SCP) - 2 nodes, 2 pods each |
-| **Cross-Zone Traffic** | Config sync (MongoDB) + Analytics (ES) |
+| **Cross-Zone Traffic** | Config sync (MongoDB) + Filtered Analytics (ES) |
 | **Intra-Zone Traffic** | Gateway ↔ Redis for rate limiting |
+| **PII/MNPI Data** | Stays in JSZ Zone only - Never sent to Core Zone |
+| **Analytics Filtering** | Request/Response body excluded, PII headers masked |
 
 ---
 
-## 9. Related Documents
+## 10. Related Documents
 
 | Document | Description |
 |----------|-------------|
